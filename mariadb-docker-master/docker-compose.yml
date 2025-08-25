@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  lipku-livetalking:
+    # 使用指定的阿里云镜像
+    image: registry.cn-zhangjiakou.aliyuncs.com/codewithgpu3/lipku-livetalking:toza2irpHZ
+    
+    # 启用交互式终端（对应原命令的 -it）
+    tty: true
+    stdin_open: true
+    
+    # 网络模式使用主机网络（对应原命令的 --network=host）
+    network_mode: host
+    
+    # 允许容器使用所有 GPU（对应原命令的 --gpus all）
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+    # 容器停止后自动删除（对应原命令的 --rm）
+    restart: "no"  # 不自动重启，停止后即删除
+    
+    # 可选：添加环境变量（如果应用需要）
+    # environment:
+    #   - ENV_NAME=value
+    
+    # 可选：挂载数据卷（如果需要持久化数据）
+    # volumes:
+    #   - ./local_data:/container_data
